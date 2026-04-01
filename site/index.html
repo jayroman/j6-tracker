@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>J6 Pardon Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>January 6 Pardon Tracker</h1>
+    <p class="subtitle">Tracking the status of individuals pardoned for their role in the January 6, 2021 Capitol breach.</p>
+  </header>
+
+  <main>
+    <section class="stats" id="stats"></section>
+
+    <section class="controls">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search by name, state, or charge...">
+      </div>
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="free">Free</button>
+        <button class="filter-btn" data-filter="re_arrested">Re-Arrested</button>
+        <button class="filter-btn" data-filter="incarcerated">Incarcerated</button>
+        <button class="filter-btn" data-filter="deceased">Deceased</button>
+      </div>
+    </section>
+
+    <section class="table-container">
+      <table id="pardonee-table">
+        <thead>
+          <tr>
+            <th data-sort="name">Name <span class="sort-arrow"></span></th>
+            <th data-sort="state">State <span class="sort-arrow"></span></th>
+            <th data-sort="original_charge">Original Charge <span class="sort-arrow"></span></th>
+            <th data-sort="original_sentence">Sentence <span class="sort-arrow"></span></th>
+            <th data-sort="current_status">Current Status <span class="sort-arrow"></span></th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </section>
+
+    <section class="last-updated" id="last-updated"></section>
+  </main>
+
+  <footer>
+    <p>Data sourced from public court records, BOP inmate locator, and news reports.</p>
+    <p>This is an open-source project. <a href="#" id="github-link">Contribute on GitHub</a></p>
+  </footer>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# No external dependencies required for core functionality.
+# The scripts use only Python stdlib (urllib, json, csv).
+#
+# Optional (for enhanced LLM classification):
+# anthropic>=0.40.0

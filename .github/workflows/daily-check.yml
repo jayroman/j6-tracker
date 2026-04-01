@@ -1,0 +1,54 @@
+name: Daily Status Check
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual triggers
+
+permissions:
+  contents: write
+
+jobs:
+  check-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check BOP Inmate Locator
+        run: python scripts/check_bop.py
+        continue-on-error: true
+
+      - name: Check News Sources
+        env:
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/check_news.py
+        continue-on-error: true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push updates
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "J6 Tracker Bot"
+          git config user.email "bot@j6tracker.example"
+          git add data/
+          git commit -m "Auto-update: $(date -u +%Y-%m-%d) status check"
+          git push
+
+      - name: Deploy site
+        if: steps.changes.outputs.changed == 'true'
+        run: echo "Trigger deploy webhook or push to gh-pages here"
